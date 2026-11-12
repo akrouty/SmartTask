@@ -1,0 +1,274 @@
+<div class="space-y-8 transition-colors duration-300">
+  <!-- Error -->
+  <div
+    *ngIf="error"
+    class="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 flex items-center justify-between dark:border-red-900/40 dark:bg-red-950/30 transition-colors duration-300"
+  >
+    <div class="text-sm text-red-700 dark:text-red-200">
+      {{ error }}
+    </div>
+
+    <button
+      type="button"
+      class="text-sm font-medium text-red-700 hover:underline dark:text-red-200"
+      (click)="reload()"
+    >
+      Réessayer
+    </button>
+  </div>
+
+  <!-- Titre principal -->
+  <section class="space-y-1 st-enter">
+    <h1
+      class="text-2xl font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2"
+    >
+      Bienvenue sur
+      <span class="text-indigo-600 dark:text-indigo-400">SMART</span>Task
+    </h1>
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      Voici un aperçu de vos projets et tâches.
+    </p>
+  </section>
+
+  <!-- Accès rapide -->
+  <section
+    class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 st-enter"
+  >
+    <div class="text-xs text-slate-400 dark:text-slate-500">Accès rapide</div>
+
+    <div class="flex items-center gap-2">
+      <ui-button variant="primary" (click)="goToNewTask()">
+        + Nouvelle tâche
+      </ui-button>
+
+      <ui-button variant="secondary" (click)="goToNewProject()">
+        + Nouveau projet
+      </ui-button>
+    </div>
+  </section>
+
+  <!-- Cartes de stats -->
+  <section
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 st-enter"
+  >
+    <ng-container *ngIf="!loading; else statsSkeleton">
+      <ui-card
+        *ngFor="let stat of stats"
+        [clickable]="true"
+        padding="lg"
+        variant="default"
+        className="group w-full text-left"
+        (cardClick)="openStat(stat.id)"
+      >
+        <div class="text-xs text-slate-400 dark:text-slate-500">
+          {{ stat.label }}
+          <span
+            class="ml-1 text-slate-300 group-hover:text-slate-400 transition-colors dark:text-slate-600 dark:group-hover:text-slate-500"
+          >
+            →
+          </span>
+        </div>
+
+        <div
+          class="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100"
+        >
+          <span
+            class="tabular-nums"
+            [uiCountUp]="stat.value"
+            [duration]="900"
+            [decimals]="stat.decimals ?? 0"
+            [prefix]="stat.prefix ?? ''"
+            [suffix]="stat.suffix ?? ''"
+          ></span>
+        </div>
+
+        <div class="mt-2 text-xs text-slate-400 dark:text-slate-500">
+          {{ stat.subLabel }}
+        </div>
+      </ui-card>
+    </ng-container>
+
+    <ng-template #statsSkeleton>
+      <ui-card
+        *ngFor="let _ of [1, 2, 3, 4]"
+        padding="lg"
+        variant="default"
+        className="animate-pulse"
+      >
+        <div class="h-3 w-24 rounded bg-slate-100 dark:bg-slate-800"></div>
+        <div class="mt-3 h-7 w-16 rounded bg-slate-100 dark:bg-slate-800"></div>
+      </ui-card>
+    </ng-template>
+  </section>
+
+  <!-- Projets récents -->
+  <section class="space-y-4 mt-2 st-enter">
+    <div class="flex items-center justify-between">
+      <h2 class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+        Projets récents
+      </h2>
+      <button
+        type="button"
+        class="text-xs text-indigo-500 hover:underline dark:text-indigo-300"
+        (click)="goToProjects()"
+      >
+        Voir tout →
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div
+        *ngIf="!loading && recentProjects.length === 0"
+        class="rounded-2xl border shadow-sm p-6 text-sm bg-transparent border-slate-100 text-slate-500 dark:bg-slate-950/60 dark:border-slate-800 dark:text-slate-400 transition-colors duration-300"
+      >
+        Aucun projet à afficher pour le moment.
+      </div>
+
+      <ui-card
+        *ngFor="let project of recentProjects; let i = index"
+        [clickable]="true"
+        padding="lg"
+        variant="default"
+        className="cursor-pointer"
+        (cardClick)="openProject(project.id)"
+        [style.animationDelay.ms]="120 + i * 80"
+      >
+        <div class="flex items-center justify-between text-xs">
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded-full font-medium"
+            [ngClass]="getBadgeClasses(project.badgeColor)"
+          >
+            {{ project.tasksDone }}/{{ project.tasksTotal }} tâches
+          </span>
+
+          <button
+            type="button"
+            class="text-xs text-indigo-500 hover:underline opacity-0 group-hover:opacity-100 transition-opacity dark:text-indigo-300"
+            (click)="$event.stopPropagation(); openProject(project.id)"
+          >
+            Consulter
+          </button>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">
+            {{ project.name }}
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            {{ project.description }}
+          </p>
+        </div>
+
+        <div class="space-y-1">
+          <div
+            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400"
+          >
+            <span>Progression</span>
+            <span class="font-medium text-slate-800 dark:text-slate-200">
+              {{ project.progress }}%
+            </span>
+          </div>
+
+          <div
+            class="h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden"
+          >
+            <div
+              class="h-full rounded-full st-progress bg-slate-900 dark:bg-indigo-400"
+              [style.--p]="project.progress + '%'"
+              [style.animationDelay.ms]="200 + i * 80"
+            ></div>
+          </div>
+
+          <div class="mt-2 flex items-center justify-between">
+            <div class="text-[11px] text-slate-400 dark:text-slate-500">
+              Échéance : {{ formatDueDate(project.dueDate) }}
+            </div>
+
+            <span
+              class="text-[11px] font-medium px-2 py-0.5 rounded-full"
+              [ngClass]="getDueStatusClasses(getDueStatus(project.dueDate))"
+            >
+              {{ getDueStatus(project.dueDate) }}
+            </span>
+          </div>
+        </div>
+      </ui-card>
+    </div>
+  </section>
+
+  <!-- Tâches urgentes -->
+  <section class="space-y-4 mt-6 st-enter">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-orange-500">⚠</span>
+        <h2 class="text-sm font-semibold text-slate-800 dark:text-slate-200">
+          Tâches urgentes
+        </h2>
+      </div>
+
+      <button
+        type="button"
+        class="text-xs text-indigo-500 hover:underline dark:text-indigo-300"
+        (click)="goToTasks()"
+      >
+        Voir tout →
+      </button>
+    </div>
+
+    <ui-card
+      padding="none"
+      variant="default"
+      className="divide-y divide-slate-100 dark:divide-slate-800 overflow-hidden"
+    >
+      <div
+        *ngIf="!loading && urgentTasks.length === 0"
+        class="p-6 text-sm text-slate-500 dark:text-slate-400"
+      >
+        Aucune tâche urgente. Rien à signaler.
+      </div>
+
+      <div
+        *ngFor="let task of urgentTasks; let i = index"
+        (click)="openTask(task.id)"
+        class="group px-4 py-3 flex items-center gap-4 cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-900/40"
+        [style.animationDelay.ms]="120 + i * 70"
+      >
+        <!-- Left -->
+        <div class="min-w-0 flex-1">
+          <span
+            class="text-sm font-medium text-slate-900 dark:text-slate-100 truncate"
+          >
+            {{ task.title }}
+          </span>
+          <span class="text-xs text-slate-400 dark:text-slate-500 truncate">
+            {{ task.project }}
+          </span>
+        </div>
+
+        <!-- Right -->
+        <div class="flex items-center gap-3 shrink-0">
+          <span
+            class="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap"
+          >
+            {{ formatDueDate(task.dueDate) }}
+          </span>
+
+          <span
+            class="text-xs font-medium px-3 py-1 rounded-full whitespace-nowrap"
+            [ngClass]="getPriorityClasses(task.priority)"
+          >
+            {{ task.priority }}
+          </span>
+
+          <button
+            type="button"
+            class="text-xs text-indigo-500 hover:underline whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity dark:text-indigo-300"
+            (click)="$event.stopPropagation(); openTask(task.id)"
+          >
+            Consulter
+          </button>
+        </div>
+      </div>
+    </ui-card>
+  </section>
+</div>

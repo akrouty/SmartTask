@@ -1,0 +1,417 @@
+<div class="space-y-8 transition-colors duration-300">
+  <!-- Error (plus clean + cohérent Dashboard) -->
+  <ui-card
+    *ngIf="error"
+    padding="md"
+    variant="soft"
+    className="border-red-100 bg-red-50 dark:border-red-900/40 dark:bg-red-950/30"
+  >
+    <div class="flex items-center justify-between gap-3">
+      <p class="text-sm text-red-700 dark:text-red-200">
+        {{ error }}
+      </p>
+
+      <button
+        type="button"
+        class="text-sm font-medium text-red-700 hover:underline dark:text-red-200"
+        (click)="reload(); closeCreateModal()"
+      >
+        Réessayer
+      </button>
+    </div>
+  </ui-card>
+
+  <!-- Header -->
+  <section
+    class="flex items-start sm:items-center justify-between gap-4 st-enter"
+  >
+    <div class="space-y-1">
+      <h1 class="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+        Projets
+      </h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400">
+        Gérez tous vos projets en un seul endroit.
+      </p>
+    </div>
+
+    <ui-button variant="primary" (click)="openCreateModal()">
+      + Nouveau projet
+    </ui-button>
+  </section>
+
+  <!-- Loading state (skeleton grid) -->
+  @if (loading) {
+  <section
+    class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 st-enter"
+  >
+    <ui-card
+      *ngFor="let _ of [1, 2, 3, 4, 5, 6]"
+      padding="none"
+      variant="default"
+      className="overflow-hidden animate-pulse"
+    >
+      <div class="h-2 bg-slate-100 dark:bg-slate-800"></div>
+
+      <div class="p-5 space-y-4">
+        <div class="h-5 w-2/3 rounded bg-slate-100 dark:bg-slate-800"></div>
+        <div class="h-4 w-full rounded bg-slate-100 dark:bg-slate-800"></div>
+        <div class="h-4 w-5/6 rounded bg-slate-100 dark:bg-slate-800"></div>
+
+        <div class="space-y-2 pt-2">
+          <div class="flex items-center justify-between">
+            <div class="h-3 w-24 rounded bg-slate-100 dark:bg-slate-800"></div>
+            <div class="h-3 w-10 rounded bg-slate-100 dark:bg-slate-800"></div>
+          </div>
+          <div class="h-2 w-full rounded bg-slate-100 dark:bg-slate-800"></div>
+        </div>
+
+        <div class="h-3 w-40 rounded bg-slate-100 dark:bg-slate-800"></div>
+      </div>
+
+      <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+      <div class="p-4 flex justify-between">
+        <div class="h-3 w-28 rounded bg-slate-100 dark:bg-slate-800"></div>
+        <div class="h-3 w-24 rounded bg-slate-100 dark:bg-slate-800"></div>
+      </div>
+    </ui-card>
+  </section>
+  }
+
+  <!-- Content -->
+  @if (!loading && !error) {
+  <!-- Empty state -->
+  <ui-card
+    *ngIf="projectCards.length === 0"
+    padding="lg"
+    variant="default"
+    className="st-enter"
+  >
+    <div class="text-sm text-slate-500 dark:text-slate-400">
+      Aucun projet pour le moment. Créez votre premier projet.
+    </div>
+  </ui-card>
+
+  <!-- Grid -->
+  <section
+    class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 st-enter"
+  >
+    <ui-card
+      *ngFor="let card of projectCards; let i = index"
+      padding="none"
+      variant="default"
+      className="overflow-hidden group flex flex-col hover:shadow-md hover:-translate-y-[1px] transition-all duration-200"
+      [style.animationDelay.ms]="120 + i * 70"
+    >
+      <!-- Top gradient strip -->
+      <div
+        class="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+      ></div>
+
+      <!-- Body -->
+      <div class="p-5 flex-1 flex flex-col gap-4">
+        <!-- Title + description -->
+        <div>
+          <h2
+            class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-1"
+          >
+            {{ card.project.name }}
+          </h2>
+
+          @if (card.project.description) {
+          <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+            {{ card.project.description }}
+          </p>
+          }
+        </div>
+
+        <!-- Progress -->
+        <div class="space-y-2">
+          <div
+            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400"
+          >
+            <span>Progression</span>
+            <span class="font-medium text-slate-700 dark:text-slate-200">
+              {{ card.progressPercent }}%
+            </span>
+          </div>
+
+          <div
+            class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden"
+          >
+            <div
+              class="h-2 rounded-full st-progress bg-slate-900 dark:bg-indigo-400"
+              [style.--p]="card.progressPercent + '%'"
+              [style.animationDelay.ms]="180 + i * 70"
+            ></div>
+          </div>
+
+          <div class="text-xs text-slate-500 dark:text-slate-400">
+            {{ card.doneTasks }} / {{ card.totalTasks }} tâches complétées
+          </div>
+
+          <!-- Members + invite -->
+          <div
+            class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400"
+          >
+            @if (card.memberAvatars.length) {
+            <div class="flex -space-x-2">
+              <div
+                *ngFor="let m of card.memberAvatars"
+                class="w-8 h-6 rounded-full flex items-center justify-center text-[11px] font-semibold border bg-indigo-100 text-indigo-700 border-black/5 dark:bg-indigo-500/15 dark:text-indigo-200 dark:border-indigo-500/20"
+                [attr.title]="m.display"
+              >
+                {{ m.initials }}
+              </div>
+            </div>
+            }
+
+            <span class="inline-flex items-center gap-1">
+              👥
+              <span>
+                {{ card.membersCount }} membre{{
+                  card.membersCount > 1 ? "s" : ""
+                }}
+              </span>
+            </span>
+
+            @if (card.currentUserRole === 0) {
+            <button
+              type="button"
+              class="ml-auto inline-flex items-center gap-2 text-xs text-indigo-500 hover:text-indigo-600 dark:text-indigo-300 dark:hover:text-indigo-200 transition-colors"
+              (click)="openInviteModal(card.project)"
+            >
+              <span>Inviter</span>
+            </button>
+            }
+          </div>
+        </div>
+
+        <!-- Footer info -->
+        <div
+          class="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 mt-2"
+        >
+          <div class="flex items-center gap-2">
+            <span>📅</span>
+            <span
+              >Créé le {{ card.project.createdAt | date : "dd MMM yyyy" }}</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div
+        class="px-5 py-3 border-t flex items-center justify-between text-xs border-slate-100 dark:border-slate-800"
+      >
+        @if(card.currentUserRole === 0) {
+        <button
+          type="button"
+          class="inline-flex items-center gap-1 text-slate-500 hover:text-slate-700 dark:text-slate-300 dark:hover:text-slate-100 transition-colors"
+          (click)="openEditModal(card)"
+        >
+          <span>Gérer</span>
+        </button>
+
+        <button
+          type="button"
+          class="inline-flex items-center gap-1 text-red-500 hover:text-red-600 dark:text-red-300 dark:hover:text-red-200 transition-colors"
+          (click)="onDeleteProject(card)"
+        >
+          <span>Supprimer</span>
+        </button>
+        }
+
+        <button
+          type="button"
+          class="inline-flex items-center gap-1 font-medium text-indigo-500 hover:text-indigo-600 dark:text-indigo-300 dark:hover:text-indigo-200 transition-colors"
+          [routerLink]="['/tasks']"
+          [queryParams]="{
+            projectId: card.project.id,
+            role: card.currentUserRole
+          }"
+        >
+          <span>Voir les tâches</span>
+          <span class="opacity-0 group-hover:opacity-100 transition-opacity"
+            >→</span
+          >
+        </button>
+      </div>
+    </ui-card>
+  </section>
+
+  }
+</div>
+<!-- Modal Invite (tu l’avais déjà en dark, je garde + j’aligne overlay) -->
+@if (showInviteModal) {
+<div
+  class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 dark:bg-black/70"
+>
+  <div
+    class="bg-slate-950/90 rounded-2xl shadow-2xl w-full max-w-lg p-6 relative border border-slate-800"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h2 class="text-lg font-semibold text-white">Inviter un membre</h2>
+        @if (projectForInvite) {
+        <p class="text-xs text-slate-400 mt-1">
+          Projet :
+          <span class="font-medium">{{ projectForInvite.name }}</span>
+        </p>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="text-slate-400 hover:text-slate-200"
+        (click)="closeInviteModal()"
+      >
+        ✕
+      </button>
+    </div>
+
+    <form
+      [formGroup]="inviteForm!"
+      (ngSubmit)="submitInvite()"
+      class="space-y-4"
+    >
+      <div>
+        <label class="block text-sm font-medium text-slate-200 mb-1">
+          Email du membre *
+        </label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="ex: user@example.com"
+          class="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-indigo-500"
+        />
+        @if (getInviteEmail()?.touched && getInviteEmail()?.invalid) {
+        <div class="text-xs text-red-400 mt-1">Adresse email invalide.</div>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-200 mb-1">
+          Rôle dans le projet
+        </label>
+        <select
+          formControlName="role"
+          class="w-full px-3 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-indigo-500"
+        >
+          <option [ngValue]="1">Membre (peut gérer les tâches)</option>
+          <option [ngValue]="2">Observateur (lecture seule)</option>
+        </select>
+      </div>
+
+      @if (inviteError) {
+      <div class="text-xs text-red-400">{{ inviteError }}</div>
+      } @if (inviteSuccess) {
+      <div class="text-xs text-emerald-400">{{ inviteSuccess }}</div>
+      }
+
+      <div class="flex justify-end gap-3 pt-4">
+        <button
+          type="button"
+          class="px-4 py-2 rounded-xl border border-slate-700 text-sm text-slate-200 hover:bg-slate-800"
+          (click)="closeInviteModal()"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="inviteForm?.invalid || inviteLoading"
+          class="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-sm font-medium shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          @if (!inviteLoading) { Envoyer l’invitation } @if (inviteLoading) {
+          Envoi... }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+}
+<!-- Modal Create/Edit -->
+@if (showCreateModal) {
+<div
+  class="fixed inset-0 z-40 flex items-center justify-center bg-black/30 dark:bg-black/60"
+>
+  <div
+    class="rounded-2xl shadow-xl w-full max-w-lg p-6 relative border bg-white border-slate-200 dark:bg-slate-950 dark:border-slate-800 transition-colors duration-300"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+        {{ editing ? "Modifier le projet" : "Créer un nouveau projet" }}
+      </h2>
+      <button
+        type="button"
+        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+        (click)="closeCreateModal()"
+      >
+        ✕
+      </button>
+    </div>
+
+    <form
+      [formGroup]="createForm"
+      (ngSubmit)="submitCreate()"
+      class="space-y-4"
+    >
+      <div>
+        <label
+          class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1"
+        >
+          Nom du projet <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Ex: SmartTask - PFA 2025"
+          class="w-full px-3 py-2.5 rounded-xl border text-sm transition-colors border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:focus:bg-slate-900 dark:focus:ring-indigo-500/30"
+        />
+        @if (name?.touched && name?.invalid) {
+        <div class="text-xs text-red-500 dark:text-red-300 mt-1">
+          Le nom du projet est obligatoire (minimum 3 caractères).
+        </div>
+        }
+      </div>
+
+      <div>
+        <label
+          class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1"
+        >
+          Description
+        </label>
+        <textarea
+          rows="3"
+          formControlName="description"
+          class="w-full px-3 py-2.5 rounded-xl border text-sm resize-none transition-colors border-slate-200 bg-slate-50 text-slate-900 focus:bg-white focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:focus:ring-indigo-500/30"
+          placeholder="Ex: Projet principal de gestion des tâches pour l'année universitaire 2025."
+        ></textarea>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-4">
+        <button
+          type="button"
+          class="px-4 py-2 rounded-xl border text-sm transition-colors border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900/60"
+          (click)="closeCreateModal()"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="createForm.invalid || loading"
+          class="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-sm font-medium shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          @if (!loading) {
+          {{ editing ? "Enregistrer les modifications" : "Créer le projet" }}
+          } @if (loading) {
+          {{ editing ? "Enregistrement..." : "Création..." }}
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}

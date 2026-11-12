@@ -1,0 +1,153 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-100"
+>
+  <div class="mx-auto max-w-6xl px-4 py-8 lg:py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
+      <!-- LEFT: Visual / pitch -->
+      <section
+        class="auth-left relative overflow-hidden rounded-3xl shadow-xl border border-white/60 min-h-[520px] h-[calc(100vh-80px)] max-h-[760px]"
+      >
+        <div class="absolute inset-0 auth-bg"></div>
+        <div class="absolute inset-0 auth-overlay"></div>
+
+        <div
+          class="relative p-8 lg:p-10 text-white h-full flex flex-col justify-between"
+        >
+          <div class="space-y-5 animate-fadeInLeft">
+            <div class="inline-flex items-center gap-3">
+              <img
+                src="assets/logo_f.png"
+                alt=""
+                class="w-50 h-20 bg-transparent"
+              />
+              <div>
+                <div class="text-xl font-semibold">SmartTask</div>
+                <div class="text-sm text-white/80">Gestion simplifiée</div>
+              </div>
+            </div>
+
+            <h1 class="text-3xl lg:text-4xl font-semibold leading-tight">
+              Travaillez mieux en équipe avec SmartTask.
+            </h1>
+
+            <p class="text-sm lg:text-base text-white/85 max-w-lg">
+              Centralisez projets, tâches et discussions, et restez alignés en
+              temps réel.
+            </p>
+
+            <ul class="space-y-2 text-sm lg:text-base">
+              <li class="flex items-start gap-2">
+                <span class="mt-0.5">✅</span>
+                <span>Organisez vos projets</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-0.5">✅</span>
+                <span>Suivez vos tâches en temps réel</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-0.5">✅</span>
+                <span>Collaborez avec votre équipe</span>
+              </li>
+            </ul>
+
+            <span
+              class="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs"
+            >
+              Gratuit pour les étudiants & petites équipes.
+            </span>
+          </div>
+
+          <div class="text-xs text-white/70 pt-6 animate-fadeInUp">
+            Projet académique 2025 • UI purple theme
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Card -->
+      <section class="flex items-center justify-center">
+        <div class="w-full max-w-md">
+          <div
+            class="rounded-3xl bg-transparent border-slate-900 backdrop-blur border shadow-xl p-6 lg:p-8 transition hover:shadow-2xl hover:scale-[1.01] auth-card animate-fadeInUp min-h-[520px] h-[calc(100vh-80px)] max-h-[760px]"
+          >
+            <!-- Tabs -->
+            <div
+              class="flex items-center gap-2 p-1 rounded-2xl bg-slate-100/70 border border-slate-200"
+            >
+              <button
+                type="button"
+                (click)="setMode('login')"
+                class="flex-1 rounded-xl px-3 py-2 text-sm font-medium transition"
+                [ngClass]="
+                  mode === 'login'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                "
+              >
+                Connexion
+              </button>
+
+              <button
+                type="button"
+                (click)="setMode('register')"
+                class="flex-1 rounded-xl px-3 py-2 text-sm font-medium transition"
+                [ngClass]="
+                  mode === 'register'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                "
+              >
+                Créer un compte
+              </button>
+            </div>
+
+            <!-- Badge -->
+            <div class="mt-4">
+              <span
+                class="inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] border-purple-200 bg-purple-50 text-purple-700"
+              >
+                Beta • Projet académique 2025
+              </span>
+            </div>
+
+            <!-- Sliding forms -->
+            <div class="mt-5 overflow-hidden">
+              <div class="relative w-full">
+                <div
+                  class="flex w-[200%] transition-transform duration-700 ease-out"
+                  [ngClass]="
+                    mode === 'login' ? 'translate-x-0' : '-translate-x-1/2'
+                  "
+                >
+                  <!-- LOGIN -->
+                  <div class="w-1/2 pr-3">
+                    <app-login
+                      (switchToRegister)="setMode('register')"
+                    ></app-login>
+                  </div>
+
+                  <!-- REGISTER -->
+                  <div class="w-1/2 pl-3">
+                    <app-register
+                      (switchToLogin)="setMode('login')"
+                    ></app-register>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer help -->
+            <div class="mt-5 text-xs text-slate-500">
+              Besoin d’aide ?
+              <a
+                class="text-purple-600 hover:underline"
+                href="mailto:support@smarttask.app"
+              >
+                Contactez le support
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

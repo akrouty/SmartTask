@@ -1,0 +1,9 @@
+.st-draw-line {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  transition: stroke-dashoffset 900ms ease;
+}
+
+.st-draw-line.is-on {
+  stroke-dashoffset: 0;
+}

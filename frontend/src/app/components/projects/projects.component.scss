@@ -1,0 +1,36 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.st-enter {
+  animation: stEnter 420ms ease-out both;
+}
+
+@keyframes stEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* même logique que ta progress bar du dashboard */
+.st-progress {
+  width: var(--p);
+  animation: stProgress 700ms ease-out both;
+}
+
+@keyframes stProgress {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--p);
+  }
+}

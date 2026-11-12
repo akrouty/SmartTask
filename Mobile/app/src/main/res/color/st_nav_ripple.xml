@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Onde claire au clic -->
+    <item android:color="#331E40FF"/>
+
+    <color android:name="black" tools:ignore="ExtraText">#FF000000</color>
+    <color android:name="white">#FFFFFFFF</color>
+    <color android:name="blue_600">#1565C0</color>
+    <color android:name="blue_100">#BBDEFB</color>
+    <color android:name="transparent">#00000000</color>
+    <color android:name="st_blue">#1A73E8</color>
+    <color android:name="st_blue_dark">#145CC0</color>
+    <color android:name="st_grey_bg">#F5F7FB</color>
+    <color android:name="st_tab_inactive">#E9EFFA</color>
+    <color android:name="st_text_dark">#1F1F1F</color>
+    <color android:name="st_white">#FFFFFF</color>
+    <color android:name="st_error">#F21010</color>
+
+    <dimen android:name="st_tab_stroke">2dp</dimen>
+
+    <color android:name="st_bg">#F6F8FB</color>
+    <color android:name="st_text_muted">#6A7587</color>
+    <color android:name="st_divider">#E6E9EF</color>
+    <color android:name="st_nav_active_indicator">#EDE7FF</color>
+    <color android:name="st_blue_mid">#3C7BFF</color>
+    <color android:name="st_purple">#7B3DFF</color>
+    <!-- This is the problematic line at line 23 -->
+    <resources>
+
+        <!-- Couleurs de base -->
+        <color android:name="black">#FF000000</color>
+        <color android:name="white">#FFFFFFFF</color>
+    </resources>
+</selector>

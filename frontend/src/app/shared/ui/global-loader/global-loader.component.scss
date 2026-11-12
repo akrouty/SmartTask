@@ -1,0 +1,52 @@
+/* shimmer skeleton */
+.st-skel {
+  position: relative;
+  overflow: hidden;
+  background: rgba(148, 163, 184, 0.18); /* slate-400/18 */
+}
+.dark .st-skel {
+  background: rgba(30, 41, 59, 0.55);
+} /* slate-800/55 */
+
+.st-skel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  animation: st-shimmer 1.2s infinite;
+}
+.dark .st-skel::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+}
+
+@keyframes st-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* top bar (indeterminate) */
+.st-topbar {
+  width: 35%;
+  background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+  animation: st-bar 1s infinite ease-in-out;
+}
+@keyframes st-bar {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}

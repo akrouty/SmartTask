@@ -1,0 +1,16 @@
+<button [attr.type]="type" [disabled]="isDisabled" [class]="classes">
+  <!-- Slot icône gauche -->
+  <ng-content select="[iconLeft]"></ng-content>
+
+  <!-- Spinner (si loading) -->
+  <span
+    *ngIf="loading"
+    class="h-4 w-4 rounded-full border-2 border-current/25 border-t-current animate-spin"
+  ></span>
+
+  <!-- Label -->
+  <ng-content></ng-content>
+
+  <!-- Slot icône droite -->
+  <ng-content select="[iconRight]"></ng-content>
+</button>

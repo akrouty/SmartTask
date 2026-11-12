@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+    <color name="transparent">#00000000</color>
+    <color name="st_blue">#1A73E8</color>
+    <color name="st_blue_dark">#145CC0</color>
+
+
+    <color name="st_text_dark">#1F1F1F</color>
+    <color name="st_white">#FFFFFF</color>
+
+    <dimen name="st_tab_stroke">2dp</dimen>
+    <color name="st_bg">#F6F8FB</color>
+
+    <color name="st_text_muted">#6A7587</color>
+
+    <color name="blue_600">#1565C0</color>
+    <color name="blue_100">#BBDEFB</color>
+
+    <!-- Couleur principale de l'app -->
+    <!-- (équivalent de ton ancien st_blue) -->
+    <color name="st_primary">#1A73E8</color>
+    <color name="st_primary_dark">#145CC0</color>
+
+    <!-- Background général (utilisé dans fragment_home) -->
+    <!-- équivalent de ton ancien st_bg -->
+    <color name="st_background">#F6F8FB</color>
+
+    <!-- Autres backgrounds / états -->
+    <color name="st_grey_bg">#F5F7FB</color>
+    <color name="st_tab_inactive">#E9EFFA</color>
+    <color name="st_nav_active_indicator">#EDE7FF</color>
+
+    <!-- Texte -->
+    <!-- équivalent de st_text_dark / st_text_muted -->
+    <color name="st_text_primary">#1F1F1F</color>
+    <color name="st_text_secondary">#6A7587</color>
+
+    <!-- Track du progress bar -->
+    <color name="st_progress_track">#E9EFFA</color>
+
+    <!-- Divers -->
+    <color name="st_divider">#E6E9EF</color>
+    <color name="st_error">#F21010</color>
+
+    <!-- Couleurs supplémentaires que tu avais déjà -->
+    <color name="st_blue_mid">#3C7BFF</color>
+    <color name="st_purple">#7B3DFF</color>
+
+    <color name="st_stroke">#1A000000</color>
+    <color name="st_green">#2E7D32</color>
+    <color name="st_red">#D32F2F</color>
+    <color name="st_orange">#F57C00</color>
+    <color name="st_yellow">#FBC02D</color>
+    <color name="st_gray">#607D8B</color>
+
+    <!-- Status -->
+    <color name="st_status_done">@color/st_green</color>
+    <color name="st_status_progress">@color/st_blue</color>
+    <color name="st_status_open">@color/st_yellow</color>
+    <color name="st_status_late">@color/st_red</color>
+
+    <!-- Priority -->
+    <color name="st_priority_high">@color/st_red</color>
+    <color name="st_priority_medium">@color/st_orange</color>
+    <color name="st_priority_low">@color/st_gray</color>
+    <color name="purple">#E4AC93DB</color>
+
+    <!-- Charts -->
+    <color name="st_chart_created">#B8C0FF</color>  <!-- bleu/violet clair -->
+    <color name="st_chart_done">#A855F7</color>     <!-- violet -->
+    <color name="st_chart_line">#3B82F6</color>     <!-- bleu -->
+    <color name="st_chart_grid">#EAE6F7</color>     <!-- grid très clair -->
+
+    <!-- Pie slices -->
+    <color name="st_pie_blue">#3B82F6</color>
+    <color name="st_pie_purple">#A855F7</color>
+    <color name="st_pie_green">#22C55E</color>
+    <color name="st_pie_orange">#F97316</color>
+    <color name="st_pie_indigo">#6366F1</color>
+
+
+</resources>

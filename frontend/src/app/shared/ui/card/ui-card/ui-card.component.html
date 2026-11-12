@@ -1,0 +1,37 @@
+<ng-container [ngSwitch]="asTag">
+  <!-- BUTTON -->
+  <button
+    *ngSwitchCase="'button'"
+    type="button"
+    [disabled]="disabled"
+    [class]="computedClass"
+    (click)="emitClick($event)"
+  >
+    <ng-content></ng-content>
+  </button>
+
+  <!-- LINK -->
+  <a
+    *ngSwitchCase="'a'"
+    [attr.href]="disabled ? null : href"
+    [attr.aria-disabled]="disabled ? 'true' : null"
+    [attr.tabindex]="disabled ? -1 : 0"
+    [class]="computedClass"
+    (click)="emitClick($event)"
+    (keydown)="emitKey($event)"
+  >
+    <ng-content></ng-content>
+  </a>
+
+  <!-- DIV (default) -->
+  <div
+    *ngSwitchDefault
+    [class]="computedClass"
+    [attr.role]="clickable && !disabled ? 'button' : null"
+    [attr.tabindex]="clickable && !disabled ? 0 : null"
+    (click)="emitClick($event)"
+    (keydown)="emitKey($event)"
+  >
+    <ng-content></ng-content>
+  </div>
+</ng-container>

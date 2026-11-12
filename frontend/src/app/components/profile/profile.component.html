@@ -1,0 +1,265 @@
+<div class="space-y-6 fade-in">
+  <!-- Header -->
+  <section class="flex items-start justify-between gap-4">
+    <div class="space-y-1">
+      <h1 class="text-3xl font-semibold text-slate-900 dark:text-slate-100">
+        Profil
+      </h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400">
+        Gérez vos informations personnelles et votre sécurité.
+      </p>
+    </div>
+
+    <ui-button variant="secondary" (click)="refresh()" [disabled]="loading">
+      <span class="inline-flex items-center gap-2">
+        <lucide-icon name="RefreshCcw" class="w-4 h-4"></lucide-icon>
+        Actualiser
+      </span>
+    </ui-button>
+  </section>
+
+  <!-- Banners -->
+  <ui-card
+    *ngIf="error"
+    padding="md"
+    variant="soft"
+    className="border-red-100 bg-red-50 dark:border-red-900/40 dark:bg-red-950/30"
+  >
+    <div class="flex items-center justify-between gap-3">
+      <p class="text-sm text-red-700 dark:text-red-200">{{ error }}</p>
+      <ui-button variant="secondary" (click)="clearBanners()">OK</ui-button>
+    </div>
+  </ui-card>
+
+  <ui-card
+    *ngIf="success"
+    padding="md"
+    variant="soft"
+    className="border-emerald-100 bg-emerald-50 dark:border-emerald-900/30 dark:bg-emerald-950/25"
+  >
+    <div class="flex items-center gap-3">
+      <lucide-icon name="CheckCircle" class="w-5 h-5"></lucide-icon>
+      <p class="text-sm text-emerald-700 dark:text-emerald-200">
+        {{ success }}
+      </p>
+    </div>
+  </ui-card>
+
+  <!-- Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <!-- Left: Profile -->
+    <ui-card padding="lg" variant="default" className="slide-up">
+      <div class="flex items-center gap-4">
+        <div
+          class="w-14 h-14 rounded-2xl flex items-center justify-center font-semibold bg-gradient-to-br from-purple-600 to-violet-600 text-white shadow"
+        >
+          {{ initials(me?.fullName || me?.email) }}
+        </div>
+
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <h2
+              class="text-lg font-semibold text-slate-900 dark:text-slate-100 truncate"
+            >
+              {{ me?.fullName || "Utilisateur" }}
+            </h2>
+            <span
+              class="inline-flex items-center px-2.5 py-1 rounded-full text-xs"
+              [ngClass]="rolePillClass(me?.role || 'user')"
+            >
+              {{ roleLabel(me?.role || "user") }}
+            </span>
+          </div>
+
+          <p class="text-sm text-slate-500 dark:text-slate-400 truncate">
+            {{ me?.email || "..." }}
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <div *ngIf="loading" class="space-y-3">
+          <div
+            class="h-10 rounded-xl bg-slate-100 dark:bg-slate-800 animate-pulse"
+          ></div>
+          <div
+            class="h-10 rounded-xl bg-slate-100 dark:bg-slate-800 animate-pulse"
+          ></div>
+        </div>
+
+        <form *ngIf="!loading" [formGroup]="profileForm" class="space-y-4">
+          <div>
+            <label
+              class="text-xs font-medium text-slate-600 dark:text-slate-300"
+            >
+              Nom complet
+            </label>
+            <div class="mt-1 relative">
+              <span
+                class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >
+                <lucide-icon name="User" class="w-4 h-4"></lucide-icon>
+              </span>
+              <input
+                formControlName="fullName"
+                type="text"
+                class="w-full pl-10 pr-3 py-2.5 rounded-2xl border text-sm transition-colors border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-100 dark:focus:ring-purple-500/25 dark:focus:border-purple-400"
+                placeholder="Votre nom complet"
+              />
+            </div>
+
+            <p
+              *ngIf="pf['fullName'].touched && pf['fullName'].invalid"
+              class="mt-1 text-xs text-red-500 dark:text-red-300"
+            >
+              Nom requis (min 2 caractères).
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label
+                class="text-xs font-medium text-slate-600 dark:text-slate-300"
+              >
+                Email
+              </label>
+              <div class="mt-1 relative">
+                <span
+                  class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                >
+                  <lucide-icon name="Mail" class="w-4 h-4"></lucide-icon>
+                </span>
+                <input
+                  formControlName="email"
+                  type="text"
+                  class="w-full pl-10 pr-3 py-2.5 rounded-2xl border text-sm border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-200"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                class="text-xs font-medium text-slate-600 dark:text-slate-300"
+              >
+                Rôle
+              </label>
+              <div class="mt-1 relative">
+                <span
+                  class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                >
+                  <lucide-icon name="ShieldCheck" class="w-4 h-4"></lucide-icon>
+                </span>
+                <input
+                  formControlName="role"
+                  type="text"
+                  class="w-full pl-10 pr-3 py-2.5 rounded-2xl border text-sm border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-200"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <ui-button
+              variant="primary"
+              (click)="saveProfile()"
+              [disabled]="savingProfile || profileForm.invalid"
+            >
+              <span class="inline-flex items-center gap-2">
+                <lucide-icon name="Save" class="w-4 h-4"></lucide-icon>
+                {{ savingProfile ? "Enregistrement..." : "Enregistrer" }}
+              </span>
+            </ui-button>
+          </div>
+        </form>
+      </div>
+    </ui-card>
+
+    <!-- Right: Security -->
+    <ui-card padding="lg" variant="default" className="slide-up">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+            Sécurité
+          </h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">
+            Modifier votre mot de passe.
+          </p>
+        </div>
+      </div>
+
+      <form [formGroup]="passwordForm" class="mt-5 space-y-4">
+        <div>
+          <label class="text-xs font-medium text-slate-600 dark:text-slate-300">
+            Mot de passe actuel
+          </label>
+          <input
+            formControlName="currentPassword"
+            type="password"
+            class="mt-1 w-full px-4 py-2.5 rounded-2xl border text-sm transition-colors border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-100 dark:focus:ring-purple-500/25 dark:focus:border-purple-400"
+            placeholder="••••••••"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label
+              class="text-xs font-medium text-slate-600 dark:text-slate-300"
+            >
+              Nouveau mot de passe
+            </label>
+            <input
+              formControlName="newPassword"
+              type="password"
+              class="mt-1 w-full px-4 py-2.5 rounded-2xl border text-sm transition-colors border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-100 dark:focus:ring-purple-500/25 dark:focus:border-purple-400"
+              placeholder="min 6 caractères"
+            />
+          </div>
+
+          <div>
+            <label
+              class="text-xs font-medium text-slate-600 dark:text-slate-300"
+            >
+              Confirmer
+            </label>
+            <input
+              formControlName="confirmPassword"
+              type="password"
+              class="mt-1 w-full px-4 py-2.5 rounded-2xl border text-sm transition-colors border-slate-200 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-100 dark:focus:ring-purple-500/25 dark:focus:border-purple-400"
+              placeholder="confirmer"
+            />
+          </div>
+        </div>
+
+        <p
+          *ngIf="
+            passwordForm.touched && passwordForm.hasError('passwordMismatch')
+          "
+          class="text-xs text-red-500 dark:text-red-300"
+        >
+          Les mots de passe ne correspondent pas.
+        </p>
+
+        <div class="pt-2">
+          <ui-button
+            variant="primary"
+            (click)="changePassword()"
+            [disabled]="savingPassword || passwordForm.invalid"
+          >
+            <span class="inline-flex items-center gap-2">
+              <lucide-icon name="KeyRound" class="w-4 h-4"></lucide-icon>
+              {{ savingPassword ? "Modification..." : "Modifier" }}
+            </span>
+          </ui-button>
+        </div>
+      </form>
+
+      <div
+        class="mt-6 rounded-2xl border border-purple-100 bg-purple-50/60 p-4 dark:border-purple-500/15 dark:bg-purple-950/20"
+      >
+        <p class="text-sm text-slate-600 dark:text-slate-300">
+          Conseil : utilisez un mot de passe long (8+), avec lettres + chiffres.
+        </p>
+      </div>
+    </ui-card>
+  </div>
+</div>

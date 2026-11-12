@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Smart_Task" parent="Theme.Material3.DayNight.NoActionBar">
+
+    </style>
+
+    <style name="Theme.Smart_Task" parent="Base.Theme.Smart_Task" />
+
+
+    <style name="Theme.Smart_Task.Launcher" parent="Theme.SplashScreen">
+        <!-- pick one of these backgrounds -->
+        <item name="windowSplashScreenBackground">@drawable/bg_gradient</item>
+        <!-- centered icon for the system splash -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_mini</item>
+        <!-- after the system splash, use your normal app theme -->
+        <item name="postSplashScreenTheme">@style/Theme.Smart_Task</item>
+    </style>
+
+
+
+</resources>

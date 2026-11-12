@@ -1,0 +1,251 @@
+<div class="space-y-6 animate-fadeInUp">
+  <!-- Header -->
+  <div class="space-y-1">
+    <div class="inline-flex items-center gap-2">
+      <img src="assets/logo_f.png" alt="" class="w-10 h-10 bg-transparent" />
+
+      <div>
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          Créer un compte
+        </h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400">
+          Rejoignez SmartTask et collaborez plus efficacement.
+        </p>
+      </div>
+    </div>
+
+    <div class="pt-2">
+      <span
+        class="inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-500/25 dark:bg-purple-500/10 dark:text-purple-200"
+      >
+        Gratuit pour étudiants & petites équipes
+      </span>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+    <!-- Full name -->
+    <div class="space-y-1">
+      <label
+        class="block text-sm font-medium text-slate-700 dark:text-slate-200"
+      >
+        Nom complet
+      </label>
+
+      <div class="relative">
+        <span
+          class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"
+        >
+          👤
+        </span>
+
+        <input
+          type="text"
+          formControlName="fullName"
+          placeholder="Marie Dupont"
+          class="w-full pl-10 pr-3 py-2.5 rounded-2xl border text-sm transition border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-100 dark:focus:ring-purple-500/25 dark:focus:border-purple-400"
+        />
+      </div>
+
+      <div
+        *ngIf="fullName?.invalid && fullName?.touched"
+        class="text-xs text-red-500"
+      >
+        <span *ngIf="fullName?.errors?.['required']"
+          >Le nom est obligatoire.</span
+        >
+        <span *ngIf="fullName?.errors?.['minlength']"
+          >Minimum 3 caractères.</span
+        >
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="space-y-1">
+      <label
+        class="block text-sm font-medium text-slate-700 dark:text-slate-200"
+      >
+        Email
+      </label>
+
+      <div class="relative">
+        <span
+          class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"
+        >
+          ✉
+        </span>
+
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="exemple@smarttask.app"
+          class="w-full pl-10 pr-3 py-2.5 rounded-2xl border text-sm transition border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-100 dark:focus:ring-purple-500/25 dark:focus:border-purple-400"
+        />
+      </div>
+
+      <div
+        *ngIf="email?.invalid && email?.touched"
+        class="text-xs text-red-500"
+      >
+        <span *ngIf="email?.errors?.['required']"
+          >L'email est obligatoire.</span
+        >
+        <span *ngIf="email?.errors?.['email']">Format d'email invalide.</span>
+      </div>
+    </div>
+
+    <!-- Passwords -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <!-- Password -->
+      <div class="space-y-1">
+        <label
+          class="block text-sm font-medium text-slate-700 dark:text-slate-200"
+        >
+          Mot de passe
+        </label>
+
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"
+          >
+            🔒
+          </span>
+
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+            class="w-full pl-10 pr-3 py-2.5 rounded-2xl border text-sm transition border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-100 dark:focus:ring-purple-500/25 dark:focus:border-purple-400"
+          />
+        </div>
+
+        <div
+          *ngIf="password?.invalid && password?.touched"
+          class="text-xs text-red-500"
+        >
+          <span *ngIf="password?.errors?.['required']"
+            >Mot de passe obligatoire.</span
+          >
+          <span *ngIf="password?.errors?.['minlength']">
+            Min {{ password?.errors?.['minlength'].requiredLength }} caractères.
+          </span>
+        </div>
+      </div>
+
+      <!-- Confirm -->
+      <div class="space-y-1">
+        <label
+          class="block text-sm font-medium text-slate-700 dark:text-slate-200"
+        >
+          Confirmer
+        </label>
+
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"
+          >
+            🔒
+          </span>
+
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="••••••••"
+            class="w-full pl-10 pr-3 py-2.5 rounded-2xl border text-sm transition border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-100 focus:border-purple-400 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-100 dark:focus:ring-purple-500/25 dark:focus:border-purple-400"
+          />
+        </div>
+
+        <div
+          *ngIf="
+            (confirmPassword?.touched || password?.touched) &&
+            form.hasError('passwordsMismatch')
+          "
+          class="text-xs text-red-500"
+        >
+          Les mots de passe ne correspondent pas.
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms -->
+    <div class="flex items-start gap-2">
+      <input
+        id="terms"
+        type="checkbox"
+        formControlName="acceptTerms"
+        class="mt-1 h-4 w-4 rounded border-slate-300 text-purple-600 focus:ring-purple-500"
+      />
+      <label for="terms" class="text-xs text-slate-600 dark:text-slate-300">
+        J’accepte les
+        <a href="#" class="text-purple-600 hover:underline dark:text-purple-300"
+          >conditions</a
+        >
+        et la
+        <a href="#" class="text-purple-600 hover:underline dark:text-purple-300"
+          >confidentialité</a
+        >.
+      </label>
+    </div>
+    <div
+      *ngIf="acceptTerms?.invalid && acceptTerms?.touched"
+      class="text-xs text-red-500"
+    >
+      Vous devez accepter les conditions.
+    </div>
+
+    <!-- Error from backend -->
+    <div
+      *ngIf="error"
+      class="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/25 dark:text-red-200"
+    >
+      {{ error }}
+    </div>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      [disabled]="form.invalid || loading"
+      class="w-full py-2.5 text-sm font-medium rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md transition hover:shadow-lg hover:-translate-y-[1px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+    >
+      <span class="inline-flex items-center justify-center gap-2">
+        <span *ngIf="!loading">Créer mon compte</span>
+        <span *ngIf="loading">Création...</span>
+        <span aria-hidden="true">→</span>
+      </span>
+    </button>
+
+    <!-- Divider -->
+    <div class="flex items-center gap-3">
+      <div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+      <span class="text-xs text-slate-400">ou</span>
+      <div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+    </div>
+
+    <!-- Google -->
+    <button
+      type="button"
+      class="w-full py-2.5 text-sm font-medium rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 transition dark:border-slate-800 dark:bg-slate-950/40 dark:hover:bg-slate-900/40 flex items-center justify-center gap-2"
+    >
+      <span class="font-semibold">G</span>
+      <span>S’inscrire avec Google</span>
+    </button>
+
+    <!-- Legal -->
+    <p class="text-[11px] text-slate-500 dark:text-slate-400">
+      En créant un compte, vous acceptez les conditions d’utilisation.
+    </p>
+  </form>
+
+  <!-- Switch to login (no routerLink) -->
+  <p class="text-xs text-slate-500 text-center">
+    Vous avez déjà un compte ?
+    <button
+      type="button"
+      class="text-purple-600 font-medium hover:underline dark:text-purple-300"
+      (click)="switchToLogin.emit()"
+    >
+      Se connecter
+    </button>
+  </p>
+</div>
